@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Bash (init) script 101-manage_my_process that manages manage_my_process
+
+if [ $# -gt 0 ]
+then
+    if [ "$1" == "start" ]
+	then
+        ./manage_my_process &
+        echo "$!" > /var/run/my_process.pid
+        echo "manage_my_process started"
+    elif [ "$1" == "stop" ]
+	then
+        pid=$(cat /var/run/my_process.pid)
+        if [ -n "$pid" ]
+		then
+            kill "$pid"
+            echo "manage_my_process stopped"
+            rm -f /var/run/my_process.pid
+        else
+            echo "No running process found"
+        fi
+    elif [ "$1" == "restart" ]
+	then
+        pid=$(cat /var/run/my_process.pid)
+        if [ -n "$pid" ]
+		then
+            kill "$pid"
+            rm -f /var/run/my_process.pid
+            ./manage_my_process &
+            echo "$!" > /var/run/my_process.pid
+            echo "manage_my_process restarted"
+        else
+            echo "No running process found. Starting a new instance."
+            ./manage_my_process &
+            echo "$!" > /var/run/my_process.pid
+            echo "manage_my_process started"
+        fi
+    else
+        echo "Usage: manage_my_process {start|stop|restart}"
+    fi
+else
+    echo "Usage: manage_my_process {start|stop|restart}"
+fi
