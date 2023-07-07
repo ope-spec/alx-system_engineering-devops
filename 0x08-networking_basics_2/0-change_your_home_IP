@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Bash script that configures an Ubuntu server with the below requirements:
+# localhost resolves to 127.0.0.2
+# facebook.com resolves to 8.8.8.8
+
+HOSTS_FILE="/etc/hosts"
+NEW_HOSTS_FILE="$HOME/hosts.new"
+sudo cp "$HOSTS_FILE" "$NEW_HOSTS_FILE"
+echo "127.0.0.2       localhost" >> "$NEW_HOSTS_FILE"
+echo "8.8.8.8         facebook.com" >> "$NEW_HOSTS_FILE"
+sudo cp -f "$NEW_HOSTS_FILE" "$HOSTS_FILE"
