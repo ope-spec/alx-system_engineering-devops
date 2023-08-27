@@ -1,0 +1,7 @@
+# Bash script that creates an RSA key pair
+
+Host magic-server
+    HostName 34.232.70.218
+    User ubuntu
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
