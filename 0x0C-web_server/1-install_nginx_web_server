@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Bash script that configures a new Ubuntu machine to install nginx
-# and print "Hello World"
+# Bash script that configures a new Ubuntu machine to install nginx and print "Hello World"
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
