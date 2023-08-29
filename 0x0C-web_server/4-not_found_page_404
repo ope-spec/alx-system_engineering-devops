@@ -7,3 +7,4 @@ sed -i "46i rewrite ^/redirect_me https://www.youtube.com/watch?v=NNoMwEGW_y4 pe
 echo "Ceci n'est pas une page" > /var/www/html/PageNotFound_404.html
 sed -i "46i error_page 404 /custom_404.html;" /etc/nginx/sites-available/default
 service nginx restart
+
