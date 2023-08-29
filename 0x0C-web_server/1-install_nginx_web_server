@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Bash script that configures a new Ubuntu machine to install nginx
+# and print "Hello World"
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+echo 'Hello World!' > /var/www/html/index.html
+echo "
+server {
+    listen 80;
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}" > /etc/nginx/sites-available/default
+
+sudo service nginx start
