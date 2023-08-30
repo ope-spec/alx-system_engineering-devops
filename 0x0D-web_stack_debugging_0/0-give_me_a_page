@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-
 # Start Apache service
 sudo service apache2 start
-
-# Check if Apache is running
-if sudo service apache2 status | grep -q "apache2 is running"; then
+if sudo systemctl is-active apache2.service; then
     echo "Apache is running"
 else
     echo "Apache is not running"
