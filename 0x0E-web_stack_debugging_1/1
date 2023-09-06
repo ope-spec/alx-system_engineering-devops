@@ -1,0 +1,3 @@
+rm: remove write-protected regular file 'default'? ln: failed to create symbolic link 'default': File exists
+Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
