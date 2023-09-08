@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-# This script takes a subdomain and a domain as input and provides information about the subdomain
+# This script displays information about subdomains of a given domain.
 
 printInformation () {
-    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-    echo "$2 $line" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+    subdomain="$2"
+    domain="$1"
+    
+    result=$(dig +short "$subdomain.$domain" A)
+
+    if [ -n "$result" ]; then
+        echo "The subdomain $subdomain is a A record and points to $result"
+    else
+        echo "The subdomain $subdomain does not have an A record"
+    fi
 }
 
 if [ "$#" == 1 ]
