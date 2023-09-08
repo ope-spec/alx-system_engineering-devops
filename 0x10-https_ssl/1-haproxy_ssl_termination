@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# HAProxy SSL Termination Configuration
+
+# Frontend configuration
+frontend www-http
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.opeyemiogunniyi.tech/fullchain.pem
+    mode http
+    option httplog
+    reqadd X-Forwarded-Proto:\ https
+    default_backend www-backend
+
+# Backend configuration
+backend www-backend
+    mode http
+    balance roundrobin
+    option forwardfor
+    option httpchk HEAD / HTTP/1.1\r\nHost:localhost
+    server web01 3.85.136.193:80 check
+    server web02 107.22.144.21:80 check
