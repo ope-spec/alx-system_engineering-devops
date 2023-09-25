@@ -18,11 +18,11 @@ if __name__ == "__main__":
         json.dump({
             user.get("id"): [
                 {
-                    "task": todo.get("title"),
-                    "completed": todo.get("completed"),
+                    "task": td.get("title"),
+                    "completed": td.get("completed"),
                     "username": user.get("username")
                 }
-                for todo in requests.get(f"{base_url}todos",
-                        params={"userId": user.get("id")}).json()]
+                for td in requests.get(f"{base_url}tds",
+                                         params={"userId": user.get("id")}).json()]
             for user in users_data
         }, jsonfile, indent=4)
