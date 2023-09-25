@@ -16,7 +16,8 @@ if __name__ == "__main__":
     username = user_data.get("username")
 
     # Fetch to-do list
-    todos_response = requests.get(f"{base_url}todos", params={"userId": employee_id})
+    todos_response = requests.get(f"{base_url}todos",
+                                  params={"userId": employee_id})
     todos_data = todos_response.json()
 
     # Export to CSV
@@ -25,4 +26,5 @@ if __name__ == "__main__":
         csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
         for todo in todos_data:
             csv_writer.writerow([
-                employee_id, username, todo.get("completed"), todo.get("title")])
+                employee_id, username, todo.get("completed"),
+                todo.get("title")])
