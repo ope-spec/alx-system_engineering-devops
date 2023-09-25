@@ -1,41 +1,31 @@
 #!/usr/bin/python3
 """
-Fetch an employee's TODO list progress and save to json
+Fetch an employee's task list progress and save to JSON format.
 """
-
 import json
 import requests
 import sys
 
-
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 script.py <employee_id>")
-        sys.exit(1)
-
+if __name__ == "__main__":
     employee_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    user_url = f"{base_url}/{employee_id}"
+    base_url = "https://jsonplaceholder.typicode.com/"
 
-    response = requests.get(user_url)
-    username = response.json().get('username')
+    # Fetch user information
+    user_response = requests.get(f"{base_url}users/{employee_id}")
+    user_data = user_response.json()
+    username = user_data.get("username")
 
-    todo_url = f"{user_url}/todos"
-    response = requests.get(todo_url)
-    tasks = response.json()
+    # Fetch to-do list
+    todos_response = requests.get(f"{base_url}todos",
+                                  params={"userId": employee_id})
+    todos_data = todos_response.json()
 
-    task_list = []
-    for task in tasks:
-        task_list.append({
-            "task": task.get('title'),
-            "completed": task.get('completed'),
-            "username": username
-        })
-
-    data_dict = {employee_id: task_list}
-
-    with open(f'{employee_id}.json', 'w') as filename:
-        json.dump(data_dict, filename, indent=4)
-
-if __name__ == '__main__':
-    main()
+    # Export to JSON
+    json_filename = f"{employee_id}.json"
+    with open(json_filename, "w") as jsonfile:
+        json.dump({employee_id: [
+            {
+                "task": todo.get("title"),
+                "completed": todo.get("completed"),
+                "username": username
+            } for todo in todos_data]}, jsonfile, indent=4)
