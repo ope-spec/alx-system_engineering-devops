@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-A dictionary to store task data for all employees.
+A dictionary to store task data for all employees..
 """
 import json
 import requests
@@ -18,11 +18,10 @@ if __name__ == "__main__":
         json.dump({
             user.get("id"): [
                 {
-                    "task": td.get("title"),
-                    "completed": td.get("completed"),
+                    "task": todo.get("title"),
+                    "completed": todo.get("completed"),
                     "username": user.get("username")
-                }
-                for td in requests.get(f"{base_url}tds",
-                                         params={"userId": user.get("id")}).json()]
+                } for todo in requests.get(f"{base_url}todos",
+                                           params={"userId": user.get("id")}).json()]
             for user in users_data
         }, jsonfile, indent=4)
