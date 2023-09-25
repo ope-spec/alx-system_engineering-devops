@@ -13,15 +13,16 @@ if __name__ == "__main__":
     users_data = users_response.json()
 
     employee_data = {}
-    
+
     for user in users_data:
         user_id = user.get("id")
         username = user.get("username")
-        
+
         # Fetch to-do list for each employee
-        todos_response = requests.get(f"{base_url}todos", params={"userId": user_id})
+        todos_response = requests.get(f"{base_url}todos",
+                                      params={"userId": user_id})
         todos_data = todos_response.json()
-        
+
         # Store to-do list information
         employee_data[user_id] = [
             {
