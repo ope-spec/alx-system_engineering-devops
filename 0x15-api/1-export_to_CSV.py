@@ -1,40 +1,28 @@
 #!/usr/bin/python3
 """
-Fetch an employee's TODO list progress and save to csv
+Fetch an employee's task list progress and save to csv
 """
-
+import csv
 import requests
 import sys
-import csv
 
-
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 script.py <employee_id>")
-        sys.exit(1)
-
+if __name__ == "__main__":
     employee_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    user_url = f"{base_url}/{employee_id}"
+    base_url = "https://jsonplaceholder.typicode.com/"
 
-    response = requests.get(user_url)
-    username = response.json().get('username')
+    # Fetch user information
+    user_response = requests.get(f"{base_url}users/{employee_id}")
+    user_data = user_response.json()
+    username = user_data.get("username")
 
-    todo_url = f"{user_url}/todos"
-    response = requests.get(todo_url)
-    tasks = response.json()
+    # Fetch to-do list
+    todos_response = requests.get(f"{base_url}todos", params={"userId": employee_id})
+    todos_data = todos_response.json()
 
-    with open(f'{employee_id}.csv', 'w', newline='') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow([
-            "USER_ID", "USERNAME",
-            "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        for task in tasks:
+    # Export to CSV
+    csv_filename = f"{employee_id}.csv"
+    with open(csv_filename, "w", newline="") as csvfile:
+        csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        for todo in todos_data:
             csv_writer.writerow([
-                employee_id,
-                username,
-                task.get('completed'),
-                task.get('title')])
-
-if __name__ == '__main__':
-    main()
+                employee_id, username, todo.get("completed"), todo.get("title")])
