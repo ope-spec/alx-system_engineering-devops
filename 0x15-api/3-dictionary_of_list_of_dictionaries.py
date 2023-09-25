@@ -12,16 +12,26 @@ if __name__ == "__main__":
     users_response = requests.get(f"{base_url}users")
     users_data = users_response.json()
 
+    employee_data = {}
+    
+    for user in users_data:
+        user_id = user.get("id")
+        username = user.get("username")
+        
+        # Fetch to-do list for each employee
+        todos_response = requests.get(f"{base_url}todos", params={"userId": user_id})
+        todos_data = todos_response.json()
+        
+        # Store to-do list information
+        employee_data[user_id] = [
+            {
+                "task": todo.get("title"),
+                "completed": todo.get("completed"),
+                "username": username
+            } for todo in todos_data
+        ]
+
     # Export to JSON
     json_filename = "todo_all_employees.json"
     with open(json_filename, "w") as jsonfile:
-        json.dump({
-            user.get("id"): [
-                {
-                    "task": todo.get("title"),
-                    "completed": todo.get("completed"),
-                    "username": user.get("username")
-                } for todo in requests.get(f"{base_url}todos",
-                                           params={"userId": user.get("id")}).json()]
-            for user in users_data
-        }, jsonfile, indent=4)
+        json.dump(employee_data, jsonfile, indent=4)
