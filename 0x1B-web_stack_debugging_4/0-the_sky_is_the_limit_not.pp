@@ -7,8 +7,7 @@ file { '/etc/default/nginx_custom':
 
 # 2. Copy the custom file over the original Nginx file
 exec { 'copy-nginx-custom':
-  command => '/usr/bin/sudo cp /etc/default/nginx_custom ' +
-             '/etc/default/nginx',
+  command => '/usr/bin/sudo cp /etc/default/nginx_custom /etc/default/nginx',
   path    => '/usr/bin:/bin',
 } ->
 
